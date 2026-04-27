@@ -1,8 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	// Два вида блокировок -- оптимистичные и пессимистичные в PostgreSQL -- изучить инфу
-	fmt.Println("Пошла пизда по кочкам...")
+	fmt.Println("Стартуем ёптабля")
 }
