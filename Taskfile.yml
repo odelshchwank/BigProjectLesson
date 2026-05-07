@@ -1,0 +1,91 @@
+version: '3'
+
+silent: true
+
+dotenv: ['.env']
+
+vars:
+  PROJECT_ROOT:
+    sh: pwd
+
+tasks:
+  env-up:
+    desc: Запуск PostgreSQL
+    cmds:
+      - docker compose up -d todoapp-postgres
+
+  env-down:
+    desc: Остановка PostgreSQL
+    cmds:
+      - docker compose down todoapp-postgres
+
+  env-cleanup:
+    desc: Очистка volume файлов окружения
+    cmds:
+      - |
+        read -p "Очистить все volume файлы окружения? Опасность утери данных. [y/N]: " ans
+        if [ "$ans" = "y" ]; then
+          docker compose down todoapp-postgres
+          rm -rf out/pgdata
+          echo "Файлы окружения очищены"
+        else
+          echo "Очистка окружения отменена"
+        fi
+    interactive: true
+
+  env-port-forwarder:
+    desc: Запуск port-forwarder
+    cmds:
+      - docker compose up -d port-forwarder
+
+  env-port-close:
+    desc: Остановка port-forwarder
+    cmds:
+      - docker compose down port-forwarder
+
+  migrate-create:
+    desc: Создание миграции
+    cmds:
+      - |
+        if [ -z "{{.CLI_ARGS}}" ]; then
+          echo "Отсутствует необходимый параметр 'seq'. Пример: task migrate-create -- init"
+          exit 1
+        fi
+      - docker compose run --rm todoapp-postgres-migrate create -ext sql -dir /migrations -seq {{.CLI_ARGS}}
+
+  migrate-up:
+    desc: Применение миграций
+    cmds:
+      - task: migrate-action
+        vars:
+          ACTION: up
+
+  migrate-down:
+    desc: Откат миграций
+    cmds:
+      - task: migrate-action
+        vars:
+          ACTION: down {{.CLI_ARGS}}
+
+  migrate-action:
+    desc: Выполнение действия с миграциями
+    internal: true
+    cmds:
+      - |
+        if [ -z "{{.ACTION}}" ]; then
+          echo "Отсутствует необходимый параметр action"
+          exit 1
+        fi
+      - docker compose run --rm todoapp-postgres-migrate \
+          -path /migrations \
+          -database postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@todoapp-postgres:5432/${POSTGRES_DB}?sslmode=disable \
+          {{.ACTION}}
+
+  todoapp-run:
+    desc: Запуск приложения
+    cmds:
+      - export LOGGER_FOLDER={{.PROJECT_ROOT}}/out/logs
+      - go mod tidy
+      - go run cmd/todoapp/main.go
+    env:
+      LOGGER_FOLDER: "{{.PROJECT_ROOT}}/out/logs"

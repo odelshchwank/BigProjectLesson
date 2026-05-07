@@ -58,8 +58,7 @@ func RequestID() Middleware { // Просто функция-генератор 
 			r.Header.Set(requestIDHeader, requestID)
 			w.Header().Set(requestIDHeader, requestID)
 
-			// Передаем запрос дальше, иначе запрос остановится здесь
-			// и никуда не пойдет
+			// Передаем запрос дальше, иначе запрос остановится здесь и никуда не пойдет
 			next.ServeHTTP(w, r)
 		})
 	}
@@ -134,7 +133,7 @@ func Trace() Middleware {
 				log.Debug(
 					"<<< done HTTP request",
 					zap.Int("status_code", rw.GetStatusCodeOrPanic()),
-					zap.Duration("time", time.Since(before)),
+					zap.Duration("latency", time.Since(before)),
 				)
 			})
 	}
