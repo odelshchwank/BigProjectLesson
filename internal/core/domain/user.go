@@ -1,5 +1,12 @@
 package domain
 
+import (
+	"fmt"
+	"regexp"
+
+	core_errors "github.com/odelshchwank/BigProjectLesson/internal/core/errors"
+)
+
 type User struct {
 	ID      int
 	Version int
@@ -35,4 +42,38 @@ func NewUserUninitialized(
 		phoneNumber,
 	)
 
+}
+
+// Валидация доменной сущности пользователя
+func (u *User) Validate() error {
+	fullNameLength := len([]rune(u.FullName))
+	if fullNameLength < 3 || fullNameLength > 100 {
+		return fmt.Errorf(
+			"invalid `FullName` len: %d: %w",
+			fullNameLength,
+			core_errors.ErrInvalidArgument,
+		)
+	}
+
+	if u.PhoneNumber != nil {
+		phoneNumberLength := len([]rune(*u.PhoneNumber))
+
+		if phoneNumberLength < 10 || phoneNumberLength > 15 {
+			return fmt.Errorf(
+				"invalid `PhoneNumber` len: %d: %w",
+				phoneNumberLength,
+				core_errors.ErrInvalidArgument,
+			)
+		}
+		re := regexp.MustCompile(`^\+[0-9]{9,14}$`)
+
+		if !re.MatchString(*u.PhoneNumber) {
+			return fmt.Errorf(
+				"invalid `PhoneNumber` format: %w",
+				core_errors.ErrInvalidArgument,
+			)
+		}
+	}
+
+	return nil
 }
