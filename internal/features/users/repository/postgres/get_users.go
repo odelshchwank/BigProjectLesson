@@ -7,7 +7,7 @@ import (
 	"github.com/odelshchwank/BigProjectLesson/internal/core/domain"
 )
 
-func (r *UsersRepostitory) GetUsers(
+func (r *UsersRepository) GetUsers(
 	ctx context.Context,
 	limit *int,
 	offset *int,

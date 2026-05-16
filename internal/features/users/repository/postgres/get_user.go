@@ -10,7 +10,7 @@ import (
 	core_errors "github.com/odelshchwank/BigProjectLesson/internal/core/errors"
 )
 
-func (r *UsersRepostitory) GetUser(
+func (r *UsersRepository) GetUser(
 	ctx context.Context,
 	id int,
 ) (domain.User, error) {
