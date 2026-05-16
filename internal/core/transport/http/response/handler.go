@@ -66,6 +66,10 @@ func (h *HTTPResponseHandler) PanicResponse(p any, msg string) {
 
 }
 
+func (h *HTTPResponseHandler) NoContentResponse() {
+	h.rw.WriteHeader(http.StatusNoContent)
+}
+
 func (h *HTTPResponseHandler) ErrorResponse(err error, msg string) {
 	var (
 		statusCode int

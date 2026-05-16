@@ -7,7 +7,7 @@ import (
 	"github.com/odelshchwank/BigProjectLesson/internal/core/domain"
 )
 
-func (r *UsersRepostitory) CreateUser(
+func (r *UsersRepository) CreateUser(
 	ctx context.Context,
 	user domain.User,
 ) (domain.User, error) {
