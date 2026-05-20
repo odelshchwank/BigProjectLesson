@@ -10,7 +10,7 @@ import (
 )
 
 type CreateUserRequest struct {
-	FullName    string  `json:"full_name" validate:"required,min=3,max=100"`
+	FullName    string  `json:"full_name"    validate:"required,min=3,max=100"`
 	PhoneNumber *string `json:"phone_number" validate:"omitempty,min=10,max=15,startswith=+"`
 }
 
@@ -35,8 +35,6 @@ func (h *UsersHTTPHandler) CreateUser(rw http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.FromContext(ctx)
 	responseHandler := core_http_response.NewHTTPResponseHandler(log, rw)
-
-	log.Debug("invoke CreateUser handler")
 
 	var request CreateUserRequest
 	if err := core_http_request.DecodeAndValidateRequest(r, &request); err != nil {
