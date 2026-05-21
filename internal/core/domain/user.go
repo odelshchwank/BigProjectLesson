@@ -125,3 +125,13 @@ func (u *User) ApplyPatch(patch UserPatch) error {
 
 	return nil
 }
+
+func NewUserPatch(
+	fullName Nullable[string],
+	phoneNumber Nullable[string],
+) UserPatch {
+	return UserPatch{
+		FullName:    fullName,
+		PhoneNumber: phoneNumber,
+	}
+}

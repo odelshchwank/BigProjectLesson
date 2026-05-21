@@ -7,10 +7,10 @@ import (
 )
 
 type UsersService struct {
-	usersRepostitory UsersRepostitory
+	usersRepository UsersRepository
 }
 
-type UsersRepostitory interface {
+type UsersRepository interface {
 	CreateUser(
 		ctx context.Context,
 		user domain.User,
@@ -40,9 +40,9 @@ type UsersRepostitory interface {
 }
 
 func NewUsersService(
-	usersRepostitory UsersRepostitory,
+	usersRepository UsersRepository,
 ) *UsersService {
 	return &UsersService{
-		usersRepostitory: usersRepostitory,
+		usersRepository: usersRepository,
 	}
 }

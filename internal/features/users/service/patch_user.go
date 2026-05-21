@@ -13,7 +13,7 @@ func (s *UsersService) PatchUser(
 	patch domain.UserPatch,
 ) (domain.User, error) {
 	// 1. get user by id
-	user, err := s.usersRepostitory.GetUser(ctx, id)
+	user, err := s.usersRepository.GetUser(ctx, id)
 	if err != nil {
 		return domain.User{}, fmt.Errorf("get user: %w", err)
 	}
@@ -24,7 +24,7 @@ func (s *UsersService) PatchUser(
 	}
 
 	// 3. save patched user in repo
-	patchedUser, err := s.usersRepostitory.PatchUser(ctx, id, user)
+	patchedUser, err := s.usersRepository.PatchUser(ctx, id, user)
 	if err != nil {
 		return domain.User{}, fmt.Errorf("patch user: %w", err)
 	}
