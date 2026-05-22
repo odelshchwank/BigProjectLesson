@@ -11,6 +11,9 @@ import (
 	core_pgx_pool "github.com/odelshchwank/BigProjectLesson/internal/core/repository/postgres/pool/pgx"
 	core_http_middleware "github.com/odelshchwank/BigProjectLesson/internal/core/transport/http/middleware"
 	core_http_server "github.com/odelshchwank/BigProjectLesson/internal/core/transport/http/server"
+	tasks_postgres_repository "github.com/odelshchwank/BigProjectLesson/internal/features/tasks/repository/postgres"
+	tasks_service "github.com/odelshchwank/BigProjectLesson/internal/features/tasks/service"
+	tasks_transport_http "github.com/odelshchwank/BigProjectLesson/internal/features/tasks/transport/http"
 	users_postgres_repository "github.com/odelshchwank/BigProjectLesson/internal/features/users/repository/postgres"
 	users_service "github.com/odelshchwank/BigProjectLesson/internal/features/users/service"
 	users_transport_http "github.com/odelshchwank/BigProjectLesson/internal/features/users/transport/http"
@@ -46,12 +49,19 @@ func main() {
 	defer pool.Close()
 	// Закончили инициализацию бд-пула
 
-	// Инициализируем все наши слои (бд, сервис и транспорт)
+	// Инициализируем все наши слои (бд, сервис и транспорт) фичи users
 	logger.Debug("initializing feature", zap.String("feature", "users"))
 	usersRepository := users_postgres_repository.NewUsersRepository(pool)
 	usersService := users_service.NewUsersService(usersRepository)
 	usersTransportHTTP := users_transport_http.NewUsersHTTPHandler(usersService)
-	// Закончили инициализацию слоев
+	// Закончили инициализацию слоев фичи users
+
+	// Инициализируем все наши слои (бд, сервис и транспорт) фичи tasks
+	logger.Debug("initializing feature", zap.String("feature", "tasks"))
+	tasksRepository := tasks_postgres_repository.NewTasksRepository(pool)
+	tasksService := tasks_service.NewTasksService(tasksRepository)
+	tasksTransportHTTP := tasks_transport_http.NewTasksHTTPHandler(tasksService)
+	// Закончили инициализацию слоев фичи tasks
 
 	// Инициализируем сервер
 	logger.Debug("initializing HTTP server")
@@ -66,6 +76,7 @@ func main() {
 
 	apiVersionRouterV1 := core_http_server.NewAPIVersionRouter(core_http_server.ApiVersion1)
 	apiVersionRouterV1.RegisterRoutes(usersTransportHTTP.Routes()...)
+	apiVersionRouterV1.RegisterRoutes(tasksTransportHTTP.Routes()...)
 
 	/* apiVersionRouterV2 := core_http_server.NewAPIVersionRouter(
 		core_http_server.ApiVersion2,
