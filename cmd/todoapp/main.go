@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	core_logger "github.com/odelshchwank/BigProjectLesson/internal/core/logger"
 	core_pgx_pool "github.com/odelshchwank/BigProjectLesson/internal/core/repository/postgres/pool/pgx"
@@ -20,7 +21,13 @@ import (
 	"go.uber.org/zap"
 )
 
+var (
+	timeZone = time.UTC
+)
+
 func main() {
+	time.Local = timeZone
+
 	ctx, cancel := signal.NotifyContext(
 		context.Background(),
 		syscall.SIGINT, syscall.SIGTERM,
@@ -28,7 +35,6 @@ func main() {
 	defer cancel()
 
 	// Инициализация логгера
-	fmt.Println("Стартуем ёптабля")
 	logger, err := core_logger.NewLogger(core_logger.NewConfigMust())
 	if err != nil {
 		fmt.Println("failed to init application logger:", err)
@@ -36,6 +42,8 @@ func main() {
 	}
 	defer logger.Close()
 	// Закончили инициализацию логгера
+
+	logger.Debug("application time zone", zap.Any("zone", timeZone))
 
 	// Инициализация бд-пула
 	logger.Debug("initializing postgres connection pool")
