@@ -61,16 +61,3 @@ func (h *TasksHTTPHandler) CreateTask(rw http.ResponseWriter, r *http.Request) {
 	response := taskDTOFromDomain(taskDomain)
 	responseHandler.JSONResponse(response, http.StatusCreated)
 }
-
-func taskDTOFromDomain(task domain.Task) CreateTaskResponse {
-	return CreateTaskResponse{
-		ID:           task.ID,
-		Version:      task.Version,
-		Title:        task.Title,
-		Description:  task.Description,
-		Completed:    task.Completed,
-		CreatedAt:    task.CreatedAt,
-		CompletedAt:  task.CompletedAt,
-		AuthorUserID: task.AuthorUserID,
-	}
-}
