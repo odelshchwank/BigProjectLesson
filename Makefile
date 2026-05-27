@@ -27,7 +27,7 @@ env-port-close:
 
 migrate-create:
 	@if [ -z "$(seq)" ]; then \
-		echo "Отсустствует необходимый параметр 'seq'.  Пример: make migrate-create seq=init "; \
+		echo "Отсутствует необходимый параметр 'seq'.  Пример: make migrate-create seq=init "; \
 		exit 1;\
 	fi; \
 	@docker compose run --rm todoapp-postgres-migrate \
@@ -44,7 +44,7 @@ migrate-down:
 
 migrate-action:
 	@if [ -z "$(action)" ]; then \
-		echo "Отсустствует необходимый параметр action.  Пример: make migrate-action action=down 1"; \
+		echo "Отсутствует необходимый параметр action.  Пример: make migrate-action action=down 1"; \
 		exit 1;\
 	fi; \
 	

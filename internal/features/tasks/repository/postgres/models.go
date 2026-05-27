@@ -17,21 +17,21 @@ type TaskModel struct {
 	AuthorUserID int
 }
 
-func taskDomainsFromModels(tasks []TaskModel) []domain.Task {
-	taskDomains := make([]domain.Task, len(tasks))
+func taskDomainsFromModels(taskModels []TaskModel) []domain.Task {
+	domains := make([]domain.Task, len(taskModels))
 
-	for i, task := range tasks {
-		taskDomains[i] = domain.NewTask(
-			task.ID,
-			task.Version,
-			task.Title,
-			task.Description,
-			task.Completed,
-			task.CreatedAt,
-			task.CompletedAt,
-			task.AuthorUserID,
+	for i, model := range taskModels {
+		domains[i] = domain.NewTask(
+			model.ID,
+			model.Version,
+			model.Title,
+			model.Description,
+			model.Completed,
+			model.CreatedAt,
+			model.CompletedAt,
+			model.AuthorUserID,
 		)
 	}
 
-	return taskDomains
+	return domains
 }

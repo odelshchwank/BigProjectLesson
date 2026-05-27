@@ -34,9 +34,9 @@ func NewAPIVersionRouter(
 
 func (r *APIVersionRouter) RegisterRoutes(routes ...Route) {
 	for _, route := range routes {
-		// Например получим "GET" и "/users" -- такое http гошный кушает и работает
+		// Например получим "GET" и "/users" — такой формат принимает стандартный Go net/http
 		pattern := fmt.Sprintf("%s %s", route.Method, route.Path)
-		fmt.Printf("Reqistering route: %s\n", pattern)
+		fmt.Printf("Registering route: %s\n", pattern)
 
 		r.Handle(pattern, route.WithMiddleware())
 	}

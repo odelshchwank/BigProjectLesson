@@ -30,7 +30,7 @@ func NewUser(
 	}
 }
 
-// Создание нового непроинициализированного пользователя
+// Создание нового неинициализированного пользователя
 func NewUserUninitialized(
 	fullName string,
 	phoneNumber *string,

@@ -38,7 +38,7 @@ func (r *PatchUserRequest) Validate() error {
 		fullNameLen := len([]rune(*r.FullName.Value))
 		if fullNameLen < 3 || fullNameLen > 100 {
 			return fmt.Errorf(
-				"`FullName` must be beteween 3 and 100 symbols",
+				"`FullName` must be between 3 and 100 symbols",
 			)
 		}
 	}
@@ -54,7 +54,7 @@ func (r *PatchUserRequest) Validate() error {
 
 			if !strings.HasPrefix(*r.PhoneNumber.Value, "+") {
 				return fmt.Errorf(
-					"`PhoneNumeber` must starts with `+` symbol",
+					"`PhoneNumber` must start with `+` symbol",
 				)
 			}
 		}
@@ -70,7 +70,7 @@ func (h *UsersHTTPHandler) PatchUser(rw http.ResponseWriter, r *http.Request) {
 	log := core_logger.FromContext(ctx)
 	responseHandler := core_http_response.NewHTTPResponseHandler(log, rw)
 
-	userId, err := core_http_request.GetIntPathValue(r, "id")
+	userID, err := core_http_request.GetIntPathValue(r, "id")
 	if err != nil {
 		responseHandler.ErrorResponse(
 			err,
@@ -92,7 +92,7 @@ func (h *UsersHTTPHandler) PatchUser(rw http.ResponseWriter, r *http.Request) {
 
 	userPatch := userPatchFromRequest(request)
 
-	userDomain, err := h.usersService.PatchUser(ctx, userId, userPatch)
+	userDomain, err := h.usersService.PatchUser(ctx, userID, userPatch)
 	if err != nil {
 		responseHandler.ErrorResponse(
 			err,
