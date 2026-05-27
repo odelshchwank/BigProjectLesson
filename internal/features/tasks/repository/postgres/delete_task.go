@@ -16,7 +16,7 @@ func (r *TasksRepository) DeleteTask(
 
 	query := `
 	DELETE FROM todoapp.tasks
-	WHERE id=$1
+	WHERE id=$1;
 	`
 
 	cmdTag, err := r.pool.Exec(ctx, query, taskID)
