@@ -62,14 +62,14 @@ func main() {
 	usersRepository := users_postgres_repository.NewUsersRepository(pool)
 	usersService := users_service.NewUsersService(usersRepository)
 	usersTransportHTTP := users_transport_http.NewUsersHTTPHandler(usersService)
-	// Закончили инициализацию слоев фичи users
+	// Закончили инициализацию слоёв фичи users
 
 	// Инициализируем все наши слои (бд, сервис и транспорт) фичи tasks
 	logger.Debug("initializing feature", zap.String("feature", "tasks"))
 	tasksRepository := tasks_postgres_repository.NewTasksRepository(pool)
 	tasksService := tasks_service.NewTasksService(tasksRepository)
 	tasksTransportHTTP := tasks_transport_http.NewTasksHTTPHandler(tasksService)
-	// Закончили инициализацию слоев фичи tasks
+	// Закончили инициализацию слоёв фичи tasks
 
 	// Инициализируем сервер
 	logger.Debug("initializing HTTP server")

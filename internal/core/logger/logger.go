@@ -45,8 +45,8 @@ func NewLogger(config Config) (*Logger, error) {
 	// Логгер пишу такой же как и раньше, набиваю руку ептабля
 	zapLvl := zap.NewAtomicLevel()
 	if err := zapLvl.UnmarshalText([]byte(config.Level)); err != nil {
-		return nil, fmt.Errorf("unmarshall log level -> %w", err)
-	} // Здесь мы указываем уровень на котором у нас ведется логгирование и вводим обработку ошибок
+		return nil, fmt.Errorf("unmarshal log level -> %w", err)
+	} // Здесь мы указываем уровень, на котором ведётся логирование, и обрабатываем ошибки
 
 	if err := os.MkdirAll(config.Folder, 0755); err != nil {
 		return nil, fmt.Errorf("mkdir log folder -> %w", err)

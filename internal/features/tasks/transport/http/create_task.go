@@ -2,7 +2,6 @@ package tasks_transport_http
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/odelshchwank/BigProjectLesson/internal/core/domain"
 	core_logger "github.com/odelshchwank/BigProjectLesson/internal/core/logger"
@@ -16,16 +15,7 @@ type CreateTaskRequest struct {
 	AuthorUserID int     `json:"author_user_id" validate:"required"`
 }
 
-type CreateTaskResponse struct {
-	ID           int        `json:"id"`
-	Version      int        `json:"version"`
-	Title        string     `json:"title"`
-	Description  *string    `json:"description"`
-	Completed    bool       `json:"completed"`
-	CreatedAt    time.Time  `json:"created_at"`
-	CompletedAt  *time.Time `json:"completed_at"`
-	AuthorUserID int        `json:"author_user_id"`
-}
+type CreateTaskResponse TaskDTOResponse
 
 func (h *TasksHTTPHandler) CreateTask(rw http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -36,7 +26,7 @@ func (h *TasksHTTPHandler) CreateTask(rw http.ResponseWriter, r *http.Request) {
 	if err := core_http_request.DecodeAndValidateRequest(r, &request); err != nil {
 		responseHandler.ErrorResponse(
 			err,
-			"failde to decode and validate request",
+			"failed to decode and validate request",
 		)
 
 		return
@@ -58,6 +48,6 @@ func (h *TasksHTTPHandler) CreateTask(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := taskDTOFromDomain(taskDomain)
+	response := CreateTaskResponse(taskDTOFromDomain(taskDomain))
 	responseHandler.JSONResponse(response, http.StatusCreated)
 }

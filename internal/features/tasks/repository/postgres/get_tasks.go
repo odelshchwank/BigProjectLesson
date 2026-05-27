@@ -2,12 +2,9 @@ package tasks_postgres_repository
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"github.com/odelshchwank/BigProjectLesson/internal/core/domain"
-	core_errors "github.com/odelshchwank/BigProjectLesson/internal/core/errors"
-	core_postgres_pool "github.com/odelshchwank/BigProjectLesson/internal/core/repository/postgres/pool"
 )
 
 func (r *TasksRepository) GetTasks(
@@ -20,20 +17,35 @@ func (r *TasksRepository) GetTasks(
 	defer cancel()
 
 	query := `
-	SELECT *
+	SELECT 
+		id,
+		version,
+		title,
+		description,
+		completed,
+		created_at,
+		completed_at,
+		author_user_id
 	FROM todoapp.tasks
-	WHERE author_user_id = $1
+	%s
 	ORDER BY id ASC
-	LIMIT $2
-	OFFSET $3;
+	LIMIT $1
+	OFFSET $2;
 	`
+
+	args := []any{limit, offset}
+
+	if userID != nil {
+		query = fmt.Sprintf(query, "WHERE author_user_id = $3")
+		args = append(args, userID)
+	} else {
+		query = fmt.Sprintf(query, "")
+	}
 
 	rows, err := r.pool.Query(
 		ctx,
 		query,
-		userID,
-		limit,
-		offset,
+		args...,
 	)
 	if err != nil {
 		return nil, fmt.Errorf(
@@ -60,17 +72,8 @@ func (r *TasksRepository) GetTasks(
 		)
 
 		if err != nil {
-			if errors.Is(err, core_postgres_pool.ErrViolatesForeignKey) {
-				return []domain.Task{}, fmt.Errorf(
-					"%v: user with id=`%d`: %w",
-					err,
-					taskModel.AuthorUserID,
-					core_errors.ErrNotFound,
-				)
-			}
-
 			return nil, fmt.Errorf(
-				"scan users: %w",
+				"scan tasks: %w",
 				err,
 			)
 		}

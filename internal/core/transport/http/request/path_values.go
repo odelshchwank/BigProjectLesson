@@ -11,10 +11,10 @@ import (
 /*
 	Изначально этот файл был сделан для функции GetUser, т.к. ID пользователя мы будем получать
 	из path-значений. Чтобы не городить этот код в сервис-слое и вдруг он понадобится
-	для реализации других фич -- закинул его в utils
+	для реализации других фич — вынес в пакет request
 */
 
-// Получение значения из path value(GET /users/[ID])
+// Получение значения из path value (GET /users/{id})
 func GetIntPathValue(r *http.Request, key string) (int, error) {
 	pathValue := r.PathValue(key)
 

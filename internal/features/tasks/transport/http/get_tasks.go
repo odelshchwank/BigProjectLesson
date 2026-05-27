@@ -34,7 +34,7 @@ func (h *TasksHTTPHandler) GetTasks(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := GetTasksResponse(tasksDTOFromDomain(tasksDomains))
+	response := GetTasksResponse(taskDTOsFromDomains(tasksDomains))
 
 	responseHandler.JSONResponse(response, http.StatusOK)
 }
