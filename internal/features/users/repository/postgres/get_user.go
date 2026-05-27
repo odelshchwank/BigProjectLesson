@@ -45,12 +45,7 @@ func (r *UsersRepository) GetUser(
 		}
 	}
 
-	userDomain := domain.NewUser(
-		userModel.ID,
-		userModel.Version,
-		userModel.FullName,
-		userModel.PhoneNumber,
-	)
+	userDomain := userDomainFromModel(userModel)
 
 	return userDomain, nil
 }

@@ -35,3 +35,17 @@ func taskDomainsFromModels(taskModels []TaskModel) []domain.Task {
 
 	return domains
 }
+
+func taskDomainFromModel(task TaskModel) domain.Task {
+	return domain.NewTask(
+		task.ID,
+		task.Version,
+		task.Title,
+		task.Description,
+		task.Completed,
+		task.CreatedAt,
+		task.CompletedAt,
+		task.AuthorUserID,
+	)
+
+}
