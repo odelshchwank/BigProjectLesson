@@ -8,6 +8,18 @@ import (
 	core_http_response "github.com/odelshchwank/BigProjectLesson/internal/core/transport/http/response"
 )
 
+// DeleteUser    godoc
+// @Summary      Удалить пользователя
+// @Description  Удалить существующего пользователя из системы
+// @Tags         users
+// @Accept       query
+// @Produce
+// @Param        request body	DeleteUserRequest	true "DeleteUser тело запроса"
+// @Success      204 			CreateUserResponse "Успешно удаленный пользователь"
+// @Failure      400 {object}	core_http_response.ErrorResponse "BadRequest"
+// @Failure      404 {object}	core_http_response.ErrorResponse "NotFound"
+// @Failure      500 {object}	core_http_response.ErrorResponse "Internal server error"
+// @Router       /users [POST]
 func (h *UsersHTTPHandler) DeleteUser(rw http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.FromContext(ctx)
