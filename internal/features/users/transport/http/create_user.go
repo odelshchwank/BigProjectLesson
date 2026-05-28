@@ -10,12 +10,23 @@ import (
 )
 
 type CreateUserRequest struct {
-	FullName    string  `json:"full_name"    validate:"required,min=3,max=100"`
-	PhoneNumber *string `json:"phone_number" validate:"omitempty,min=10,max=15,startswith=+"`
+	FullName    string  `json:"full_name"    validate:"required,min=3,max=100"                example:"Ivan Ivanov"`
+	PhoneNumber *string `json:"phone_number" validate:"omitempty,min=10,max=15,startswith=+"  example:"+375111111111"`
 }
 
 type CreateUserResponse UserDTOResponse
 
+// CreateUser    godoc
+// @Summary      Создать пользователя
+// @Description  Создать нового пользователя в системе
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        request body	CreateUserRequest	true "CreateUser тело запроса"
+// @Success      201 {object}	CreateUserResponse "Успешно созданный пользователь"
+// @Failure      400 {object}	core_http_response.ErrorResponse "BadRequest"
+// @Failure      500 {object}	core_http_response.ErrorResponse "Internal server error"
+// @Router       /users [POST]
 func (h *UsersHTTPHandler) CreateUser(rw http.ResponseWriter, r *http.Request) {
 	/*
 		Пояснение нахуя тут вообще мидлварка
