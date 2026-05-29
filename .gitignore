@@ -15,5 +15,6 @@ go.work
 go.work.sum
 
 .env
+.vscode
 
 /out
