@@ -24,7 +24,7 @@ type CreateUserResponse UserDTOResponse
 // @Produce      json
 // @Param        request body	CreateUserRequest	true "CreateUser тело запроса"
 // @Success      201 {object}	CreateUserResponse "Успешно созданный пользователь"
-// @Failure      400 {object}	core_http_response.ErrorResponse "BadRequest"
+// @Failure      400 {object}	core_http_response.ErrorResponse "Bad request"
 // @Failure      500 {object}	core_http_response.ErrorResponse "Internal server error"
 // @Router       /users [POST]
 func (h *UsersHTTPHandler) CreateUser(rw http.ResponseWriter, r *http.Request) {

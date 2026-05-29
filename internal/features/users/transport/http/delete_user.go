@@ -9,17 +9,15 @@ import (
 )
 
 // DeleteUser    godoc
-// @Summary      Удалить пользователя
-// @Description  Удалить существующего пользователя из системы
+// @Summary      Удаление пользователя
+// @Description  Удаление существующего в системе пользователя по его ID
 // @Tags         users
-// @Accept       query
-// @Produce
-// @Param        request body	DeleteUserRequest	true "DeleteUser тело запроса"
-// @Success      204 			CreateUserResponse "Успешно удаленный пользователь"
-// @Failure      400 {object}	core_http_response.ErrorResponse "BadRequest"
-// @Failure      404 {object}	core_http_response.ErrorResponse "NotFound"
-// @Failure      500 {object}	core_http_response.ErrorResponse "Internal server error"
-// @Router       /users [POST]
+// @Param        id  path int true                                "ID удаляемого пользователя"
+// @Success      204                                              "Успешное удаление пользователя"
+// @Failure      400 {object}	core_http_response.ErrorResponse  "Bad request"
+// @Failure      404 {object}	core_http_response.ErrorResponse  "Not found"
+// @Failure      500 {object}	core_http_response.ErrorResponse  "Internal server error"
+// @Router       /users/{id} [DELETE]
 func (h *UsersHTTPHandler) DeleteUser(rw http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.FromContext(ctx)
