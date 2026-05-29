@@ -8,4 +8,6 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/todoapp /app/cmd/
 FROM alpine:3.23
 WORKDIR /app
 COPY --from=builder /app/todoapp /app/todoapp
+COPY --from=builder /app/public /app/public
+ENV PROJECT_ROOT=/app
 CMD ["/app/todoapp"]
